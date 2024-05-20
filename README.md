@@ -50,7 +50,9 @@ Warning: the pipeline does not include the ability to train a new ETC model. For
 ## IV/Pipeline architecture:
 
 All the information needed for the pipeline to function is contained in an .ini file, which must be given to the terminal to launch the pipeline. The pipeline architecture is constructed as follows:
-A/Data simulation part
+
+A/Data simulation part:
+
 a) From the configuration file, create the project + file (setproject.R)
 
 b) Picks the parameter values then creates the configuration files for the backward (msprime) and forward (SLiM) simulators (getparams.R)
@@ -61,7 +63,7 @@ b) Picks the parameter values then creates the configuration files for the backw
 
 5) Add the neutral mutations to the tree sequence obtained (mutsim.py)
 
-B/Analysis of AI inference methods 
+B/Analysis of AI inference methods:
 
 6) Compute summary statistics for each simulated data and each window of each simulated data (For MaLAdapt + Q95)
 
