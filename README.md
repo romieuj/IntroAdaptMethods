@@ -53,9 +53,9 @@ All the information needed for the pipeline to function is contained in an .ini 
 
 A/Data simulation part:
 
-a) From the configuration file, create the project + file (setproject.R)
+1) From the configuration file, create the project + file (setproject.R)
 
-b) Picks the parameter values then creates the configuration files for the backward (msprime) and forward (SLiM) simulators (getparams.R)
+2) Picks the parameter values then creates the configuration files for the backward (msprime) and forward (SLiM) simulators (getparams.R)
 
 3) Simulates the genealogy of the ancestral populations to the populations of interest (donor and recipient) to the ancestral population to all the populations (outgroup + ingroup) in backward (coalsim.py)
 
