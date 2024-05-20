@@ -1,6 +1,7 @@
 ## IntroAdapt
 
-IntroAdaptMethod is a pipeline thta use simulated genomic data to test the perfromances of 4 adaptive introgression (AI) classification methods: A genomic scan method based on the Q95(1%,100%) summary statistic (Racimo et al., 2017), VolcanoFinder (Setter et al., 2020), genomatnn (Gower et al., 2021) and MaLAdapt (Zangh et al., 2023). 
+IntroAdaptMethod is a pipeline thta use simulated genomic data to test the perfromances of 4 adaptive introgression (AI) classification methods: A genomic scan method based on the Q95(1%,100%) summary statistic (Racimo et al., 2017 : https://doi.org/10.1093/molbev/msw216), VolcanoFinder (Setter et al., 2020 : https://doi.org/10.1371/journal.pgen.1008867
+), genomatnn (Gower et al., 2021 :  https://doi.org/10.7554/eLife.64669) and MaLAdapt (Zhang et al., 2023 : https://doi.org/10.1093/molbev/msad001). 
 If you have any questions about the use and limitations of this pipeline, please contact Jules Romieu (jules.romieu@umontpellier.fr). 
 
 Warning : The pipeline has only been tested under a Linux operating system.
@@ -28,40 +29,10 @@ a) Volcanofinder (Setter et al., 2020)
 To install Volcanofinder, go to this site:
 https://degiorgiogroup.fau.edu/vf.html
 
-Then follow the instructions there.
-
-If the site is not available, use the ‘volcanofinder_v1.0.tar.gz’ file provided in the IntroAdaptMethods folder. 
-Then extract the files contained in the folder, go to the volcanofinder_v1.0 folder obtained and open a terminal, type :
-
-```shell
-make
-```
-This will create an executable in the volcanofinder_v1.0 folder.
-
 b) genomatnn (Gower et al., 2021)
 Go to the :
 https://github.com/grahamgower/genomatnn
 and follow the installation instructions.
-
-If the git is no longer available used the genomatnn folder of IntroAdaptMathod, create the genomatnn environment then activate the :
-
-```shell
-conda env create -f environment.yml -n genomatnn
-conda activate genomatnn
-```
-
-Once the environment has been activated
-build and install genomatnn, in the terminal type :
-
-```shell
-python setup.py build_ext -i
-python setup.py install
-```
-
-Test whether the installation worked, still in the terminal:
-```shell
-nosetests -v tests
-```shell
 
 c) MaLAdapt (Zhang et al., 2023)
 The original scripts can be found on the git:
@@ -73,7 +44,7 @@ conda env create -f maladapt.yml -n maladapt
 conda activate maladapt
 ```
 
-The scripts we use can be found in the scripts folder: ‘run_maladapt.py’ for a standard way to standardized test data and in the MaLAdapt git for their way of standardized in the original article. The maladapt_input.py script contains the names of the features and summary statistics used. 
+The scripts we use to infer AI from simulated genetic data with MaLadapt can be found in the scripts folder: ‘run_maladapt.py’ for a standard way to standardized test data and in the MaLAdapt git for their way of standardized in the original article. The maladapt_input.py script contains the names of the features and summary statistics used. 
 Warning: the pipeline does not include the ability to train a new ETC model. For this we used the 5trainMaLAdapt_adapted.py script (in the scipts/standelone_scripts folder), a modified version of the script available on their git. This script requires a training table in the MaLAdapt format and a file containing the features to be kept (in the maladapt/feature/ folder).
 
 ## IV/Pipeline architecture:
@@ -81,23 +52,35 @@ Warning: the pipeline does not include the ability to train a new ETC model. For
 All the information needed for the pipeline to function is contained in an .ini file, which must be given to the terminal to launch the pipeline. The pipeline architecture is constructed as follows:
 A/Data simulation part
 a) From the configuration file, create the project + file (setproject.R)
+
 b) Picks the parameter values then creates the configuration files for the backward (msprime) and forward (SLiM) simulators (getparams.R)
+
 3) Simulates the genealogy of the ancestral populations to the populations of interest (donor and recipient) to the ancestral population to all the populations (outgroup + ingroup) in backward (coalsim.py)
+
 4) Using the tree sequence obtained with the backward simulator, simulate the genealogy from the ancestral population to the populations of interest up to the present day. Add the advantageous mutation and the migration event. (.eidos file)
+
 5) Add the neutral mutations to the tree sequence obtained (mutsim.py)
 
 B/Analysis of AI inference methods 
+
 6) Compute summary statistics for each simulated data and each window of each simulated data (For MaLAdapt + Q95)
+
 7) Select the features and summary statistics required for MaLAdapt 
+
 7') Create the unput files for genomatnn and VolcanoFinder
+
 8) Run the analysis with MaLAdapt
+
 8') Run the analysis with genomatnn
+
 8‘’) Run the analysis with VolcanoFinder
+
 9) Evaluate methods (for all genome windows, AI, Adjacent and other chromosomes)
 We advise you to run part A independently of part B. 
 
 ## V/Use of the pipeline:
 1) Fill in the .ini configuration file with the parameter values of interest 
+
 2) Open a terminal in the IntroAdaptMethods folder and type :
 
 ```shell
@@ -231,15 +214,15 @@ analysis_project_sim_n/  : folder with files for each simulated data replicat
 - project_options.ini : config file of the project
 - reftable_wind_analysis_project.csv : Merge dataframe with parameters, latent varibale and summary statistics for all windows of all genetic data replicat.
 In analysis_project_sim_n folder (sim_n = simulated genetic data number n)
--analysis_project_sim_n.eidos                                : Forward (SLiM) config file 
--analysis_project_sim_n.ini                                  : Backward (msprime) config file 
--data_parameters_analysis_project_sim_n.csv                  : Parameters values with scaling factor (from get_params.R script)
--forwsim_final_analysis_project_sim_n.trees                  : Tree sequence at the end of forward (SLiM) simulation (from slim script)
--forwsim_freq_mut_don_in_rec_analysis_project_sim_n.txt      : AI mutation informations in all recipient population (from slim script)
--forwsim_freq_mut_don_in_rec_samp_analysis_project_sim_n.txt : AI mutation informations in sampled recipient individuals (from slim script)
--forwsim_latent_variable_analysis_project_sim_n.txt          : AI Latente variables from slim script and mutsim.py script
--forwsim_start_analysis_project_sim_n.trees                  : Tree sequence at the first generation of slim script (use when AI mutation is lost and forward simulation restart).
--Mut_TreeSeq_analysis_project_sim_n.trees                    : Tree sequence after add neutral mutation and simplifying with genealogy of sampled individual (from mutsim.py)
--Recomb_interval_intro_analysis_project_sim_n.csv            : Information about introgression for each recombination interval in recipient population (from mutsim.py)   
--sum_stat_analysis_project_sim_n.csv                         : Summary statistics at genomic scale of all windows summary statistics 
--Sum_Stat_Mut_TreeSeq_analysis_project_sim_n.csv             : Windows summary statistics 
+- analysis_project_sim_n.eidos                                : Forward (SLiM) config file 
+- analysis_project_sim_n.ini                                  : Backward (msprime) config file 
+- data_parameters_analysis_project_sim_n.csv                  : Parameters values with scaling factor (from get_params.R script)
+- forwsim_final_analysis_project_sim_n.trees                  : Tree sequence at the end of forward (SLiM) simulation (from slim script)
+- forwsim_freq_mut_don_in_rec_analysis_project_sim_n.txt      : AI mutation informations in all recipient population (from slim script)
+- forwsim_freq_mut_don_in_rec_samp_analysis_project_sim_n.txt : AI mutation informations in sampled recipient individuals (from slim script)
+- forwsim_latent_variable_analysis_project_sim_n.txt          : AI Latente variables from slim script and mutsim.py script
+- forwsim_start_analysis_project_sim_n.trees                  : Tree sequence at the first generation of slim script (use when AI mutation is lost and forward simulation restart).
+- Mut_TreeSeq_analysis_project_sim_n.trees                    : Tree sequence after add neutral mutation and simplifying with genealogy of sampled individual (from mutsim.py)
+- Recomb_interval_intro_analysis_project_sim_n.csv            : Information about introgression for each recombination interval in recipient population (from mutsim.py)   
+- sum_stat_analysis_project_sim_n.csv                         : Summary statistics at genomic scale of all windows summary statistics 
+- Sum_Stat_Mut_TreeSeq_analysis_project_sim_n.csv             : Windows summary statistics 
