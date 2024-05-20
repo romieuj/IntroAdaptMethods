@@ -75,7 +75,9 @@ B/Analysis of AI inference methods:
 We advise you to run part A independently of part B. 
 
 ## V/Use of the pipeline:
-1) Fill in the .ini configuration file with the parameter values of interest 
+1) Fill in the .ini configuration file with the parameter values of interest (an example is An example is available in /config_file
+/ : config_project_example.ini and genome_example.txt all the ini file use for the manuscrit are save in /config_file
+/config_file_article/)
 
 2) Open a terminal in the IntroAdaptMethods folder and type :
 
