@@ -69,13 +69,13 @@ B/Analysis of AI inference methods:
 
 7) Select the features and summary statistics required for MaLAdapt 
 
-7') Create the unput files for genomatnn and VolcanoFinder
+7) Create the unput files for genomatnn and VolcanoFinder
 
 8) Run the analysis with MaLAdapt
 
-8') Run the analysis with genomatnn
+8) Run the analysis with genomatnn
 
-8‘’) Run the analysis with VolcanoFinder
+8) Run the analysis with VolcanoFinder
 
 9) Evaluate methods (for all genome windows, AI, Adjacent and other chromosomes)
 We advise you to run part A independently of part B. 
