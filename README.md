@@ -9,7 +9,7 @@ Warning : The pipeline has only been tested under a Linux operating system.
 ## I/ Installing Conda :
 The pipeline requires a Conda environment to be installed, so you will need to install Conda (https://conda.io/projects/conda/en/latest/index.html) to run it.
 
-## / Installing the environment :
+## II/ Installing the environment :
 The introadaptmethods.yml file can be used to install the environment. In the folder containing the yml file, open a command terminal and type :
 
 ```shell
@@ -205,7 +205,7 @@ Compares the performances of the methods (caution: for all windows in the simula
 | wind_reftable_type | String | If the merge table (parameters, latent var and sum stat values) is a reftable (model_train) or a test data (classifier) (warning : may be not work with the actual version of the pipeline)
 | reftable_type | String | Type of dataframe to obtain after the merging of parameters, latent var and sum stat dataframe, windows dataframe for all genetic data (classification), genome dataframe for all genetic data (estimation) or both (all), for performance ai classification method use all or classification |
 
-## VIII/ files at the end of the pipeline execution :
+## VIII/Files after pipeline execution :
 The pipeline will create an analysis folder in the result_dir folder, containing a project folder (result_dir/analysis/project). The project folder will contain all the files and folders for the different replicates of simulated genomic data. 
 In results/analysis/project/ folder :
 analysis_project_sim_n/  : folder with files for each simulated data replicat
@@ -224,3 +224,11 @@ In analysis_project_sim_n folder (sim_n = simulated genetic data number n)
 - Recomb_interval_intro_analysis_project_sim_n.csv            : Information about introgression for each recombination interval in recipient population (from mutsim.py)   
 - sum_stat_analysis_project_sim_n.csv                         : Summary statistics at genomic scale of all windows summary statistics 
 - Sum_Stat_Mut_TreeSeq_analysis_project_sim_n.csv             : Windows summary statistics 
+In comparison folder : Folder containing the output files of method performance comparisons for all the test genetic data available in the project. 
+- performance_metric_project.csv                               : Classification metrics and statistics for a priori thresold (define in .ini with the method_threshold parameters), mccf1 thresold  and FPR< or = 0.05 thresold. 
+- Prediction_project.csv                                       : Method score value (prediction column) by genetic data and by window (define by sim, start and end column), with window true class type (AI=1/non-AI=0), predicted class type (for a priori, mccf and fpr<=0.05 thresold) and some latent variable (AI mut freq in rec, AI mut fixation time in rec and MaLAdapt introgression proportion)
+- Classification curves : FDR by score by method, FPR by score by method, density score by class (AI = red and non-AI = blue), mccf1 (
+https://doi.org/10.48550/arXiv.2006.11278), ROC, Precision-recall.
+
+
+Warning : In the pipeline, performance tests are carried out using all the windows in the folder. For example, if a project contains 200 simulations with AI, the genome is made up of 1 chromosome of 1Mb with a mutation under AI and the non-overlapping windows are 50kb long, then the performance tests will be carried out on the 4000 windows, including 200 windows under AI and 3800 non-AI. If the genome is made up of 2 chromosomes, the performance tests will be carried out by taking into account the windows of the first chromosome and the second without differentiating between them. 
