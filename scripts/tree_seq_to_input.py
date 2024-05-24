@@ -63,24 +63,20 @@ s_size = options["sample_size"]
 
 #Save end time of forward (slim) generation
 g_end_sim        = options["generations_forward"]
-#Save sampling time of the donnor pop
+#Save sampling time of the donor pop
 sample_time_d    = options["sample_time_d"]
 #Backward generation between end of sim and don pop sampling :
 g_samp_don       = g_end_sim - sample_time_d
-#idem for donnor sister pop :
+#idem for donor sister pop :
 sample_time_do_s = options["sample_time_d_s"]
 g_samp_don_s     = g_end_sim - sample_time_do_s
 
 #Variable used if user want add error and coverage informations in his samples sequences :
-t_tratio  = options["ttratio"]
-seq_error = float(options["seqence_error"])
-is_damage = options["is_damaged"]
-coverag   = options["coverage"]
 #If the genotype are phased or not :
 is_phased = options['is_phased']
 
-#which sample should represent the donnor
-donnor_pop_stat = options["donnor_pop_stat"]
+#which sample should represent the donor
+donor_pop_stat = options["donor_pop_stat"]
 
 ################################################################################
 
@@ -104,59 +100,59 @@ nodes_popA2    = [x.id for x in treeseq.nodes() if ((x.time == g_samp_don) and (
 nodes_popB1    = [x.id for x in treeseq.nodes() if ((x.time == 1.0) and (x.population == 7))]
 nodes_popB2    = [x.id for x in treeseq.nodes() if ((x.time == 1.0) and (x.population == 8))]
 
-#define donnor pop and sister donnor pop :
-if options["donnor"] == '"A1"' :
-    nodes_donnor = nodes_popA1
+#define donor pop and sister donor pop :
+if options["donor"] == '"A1"' :
+    nodes_donor = nodes_popA1
     nodes_don_sis = nodes_popA2
     n_don=n_popA1
     n_don_sis=n_popA2
-elif options["donnor"] == '"A2"' :
-    nodes_donnor = nodes_popA2
+elif options["donor"] == '"A2"' :
+    nodes_donor = nodes_popA2
     nodes_don_sis = nodes_popA1
     n_don=n_popA2
     n_don_sis=n_popA1
-elif options["donnor"] == '"B1"' :
-    nodes_donnor = nodes_popB1
+elif options["donor"] == '"B1"' :
+    nodes_donor = nodes_popB1
     nodes_don_sis = nodes_popB2
     n_don=n_popB1
     n_don_sis=n_popB2
-elif options["donnor"] == '"B2"' :
-    nodes_donnor = nodes_popB2
+elif options["donor"] == '"B2"' :
+    nodes_donor = nodes_popB2
     nodes_don_sis = nodes_popB1
     n_don=n_popB2
     n_don_sis=n_popB1
 
 #define recipient pop and sister recipient pop :
-if options["recevor"] == '"A1"' :
+if options["recipient"] == '"A1"' :
     nodes_recipient = nodes_popA1
     n_rec=n_popA1
     nodes_rec_sis = nodes_popA2
     n_rec_sis=n_popA2
-elif options["recevor"] == '"A2"' :
+elif options["recipient"] == '"A2"' :
     nodes_recipient = nodes_popA2
     n_rec=n_popA2
     nodes_rec_sis = nodes_popA1
     n_rec_sis=n_popA1
-elif options["recevor"] == '"B1"' :
+elif options["recipient"] == '"B1"' :
     nodes_recipient = nodes_popB1
     n_rec=n_popB1
     nodes_rec_sis = nodes_popB2
     n_rec_sis=n_popB2
-elif options["recevor"] == '"B2"' :
+elif options["recipient"] == '"B2"' :
     nodes_recipient = nodes_popB2
     n_rec=n_popB2
     nodes_rec_sis = nodes_popB1
     n_rec_sis=n_popB1
 
-#to use donnor sister population for summary stat calculation :
-if donnor_pop_stat != options["donnor"] :
-    nodes_donnor = nodes_don_sis
+#to use donor sister population for summary stat calculation :
+if donor_pop_stat != options["donor"] :
+    nodes_donor = nodes_don_sis
     n_don        = n_don_sis
 
 #deduces the individuals' id from the nodes' 
 ind_outgroup  = list(set([int(i/2) for i in nodes_outgroup]))
 ind_don_sis   = list(set([int(i/2) for i in nodes_don_sis]))
-ind_donnor    = list(set([int(i/2) for i in nodes_donnor]))
+ind_donor    = list(set([int(i/2) for i in nodes_donor]))
 ind_rec_sis   = list(set([int(i/2) for i in nodes_rec_sis]))
 ind_recipient = list(set([int(i/2) for i in nodes_recipient]))
 
@@ -202,11 +198,11 @@ if genomatnn_switch=="On":
         print("Check_gnn_dir")
 
     #saves a list of each relevant population's individals id in a specific file, so that genomatnn can actually read the vcf 
-    vcf_id_donnor    = ["tsk_"+str(i) for i in ind_donnor]
+    vcf_id_donor    = ["tsk_"+str(i) for i in ind_donor]
     vcf_id_rec_sis   = ["tsk_"+str(i) for i in ind_rec_sis]
     vcf_id_recipient = ["tsk_"+str(i) for i in ind_recipient]
-    with open(gnn_dir+"donnor_"+options["sim"]+".indlist",'w') as f:#options = {"sim": "1"}
-        f.write('\n'.join(str(i) for i in vcf_id_donnor))
+    with open(gnn_dir+"donor_"+options["sim"]+".indlist",'w') as f:#options = {"sim": "1"}
+        f.write('\n'.join(str(i) for i in vcf_id_donor))
     with open(gnn_dir+"sister_"+options["sim"]+".indlist",'w') as f:#options = {"sim": "1"}
         f.write('\n'.join(str(i) for i in vcf_id_rec_sis))
     with open(gnn_dir+"recipient_"+options["sim"]+".indlist",'w') as f:#options = {"sim": "1"}
