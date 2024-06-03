@@ -227,11 +227,29 @@ In analysis_project_sim_n folder (sim_n = simulated genetic data number n)
 - sum_stat_analysis_project_sim_n.csv                         : Summary statistics at genomic scale of all windows summary statistics 
 - Sum_Stat_Mut_TreeSeq_analysis_project_sim_n.csv             : Windows summary statistics 
 
+In analysis_project_sim_n/genomatnn folder :
+- config_n.toml       : genomatnn config file (see genomatnn git)
+- donor_n.indlist     : donnor samples names list (in vcf)
+- recipient_n.indlist : recipient samples names (in vcf)
+- sister_n.indlist    : recipient sister samples names (in vcf)
+- don-rec_sis_n.vcf   : vcf with variant information for donor, recipient and recipient sister samples (tempory file)
+
+In analysis_project_sim_n/genomatnn/trained_CNN_used_name
+- predictions.pdf : AI probability by windows graph
+- prediction.txt  : AI probability by window values
+
+analysis_project_sim_n/VolconaFinder
+- AFF_volcano_n_chr_chronumber.txt : AFF file for replicat number n and chromosome specifiying by chronumber in volcanofinder file
+- SFS_volcano_n_chr_chronumber.txt : SFS file of all the chromosome or the genome. 
+- volcanotest_n_chr_chronumber.out : Volcanofinder result for the replicat number n and the chromosome number chronumber (test site : position, likelihood ratio, alpha and D)
+- volcavotest_n_chr_chronumber_dvalues : D values test to estimates LR value 
+
 In comparison folder : Folder containing the output files of method performance comparisons for all the test genetic data available in the project. 
 - performance_metric_project.csv                               : Classification metrics and statistics for a priori thresold (define in .ini with the method_threshold parameters), mccf1 thresold  and FPR< or = 0.05 thresold. 
 - Prediction_project.csv                                       : Method score value (prediction column) by genetic data and by window (define by sim, start and end column), with window true class type (AI=1/non-AI=0), predicted class type (for a priori, mccf and fpr<=0.05 thresold) and some latent variable (AI mut freq in rec, AI mut fixation time in rec and MaLAdapt introgression proportion)
 - Classification curves : FDR by score by method, FPR by score by method, density score by class (AI = red and non-AI = blue), mccf1 (
 https://doi.org/10.48550/arXiv.2006.11278), ROC, Precision-recall.
+
 
 
 Warning : In the pipeline, performance tests are carried out using all the windows in the folder. For example, if a project contains 200 simulations with AI, the genome is made up of 1 chromosome of 1Mb with a mutation under AI and the non-overlapping windows are 50kb long, then the performance tests will be carried out on the 4000 windows, including 200 windows under AI and 3800 non-AI. If the genome is made up of 2 chromosomes, the performance tests will be carried out by taking into account the windows of the first chromosome and the second without differentiating between them. If the user wishes to calculate classification metrics for a test dataset containing a certain type of non-AI window (Adjacente or neutral chromosome for example). They can use the method score values stored in the Prediction_project.csv file and keep the sim, start, end, method, classifier and prediction columns for the windows they are interested in, and then calculate their own classification metrics. 
