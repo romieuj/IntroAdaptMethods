@@ -45,7 +45,10 @@ conda activate maladapt
 ```
 
 The scripts we use to infer AI from simulated genetic data with MaLadapt can be found in the scripts folder: ‘run_maladapt.py’ for a standard way to standardized test data and in the MaLAdapt git for their way of standardized in the original article. The maladapt_input.py script contains the names of the features and summary statistics used. 
-Warning: the pipeline does not include the ability to train a new ETC model. For this we used the 5trainMaLAdapt_adapted.py script (in the scipts/standelone_scripts folder), a modified version of the script available on their git. This script requires a training table in the MaLAdapt format and a file containing the features to be kept (in the maladapt/feature/ folder).
+
+Warning 1: The pipeline does not include the ability to train a new ETC model. For this we used the 5trainMaLAdapt_adapted.py script (in the scripts/standelone_scripts folder), a modified version of the script available on their git. This script requires a training table in the MaLAdapt format and a file containing the features to be kept (in the maladapt/feature/ folder).
+
+Warning 2: The pipeline does not produce the graphs shown in the article (ROC curves and violin plot). Examples of the R scripts used to obtain these graphs can be found in the scripts/standelone_scripts folder. They cannot be run directly after the last rule in the snakemake pipeline (end_evaluation) and the paths to the files must be entered manually. 
 
 ## IV/Pipeline architecture:
 
