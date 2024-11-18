@@ -42,9 +42,9 @@ Sample     = opts$Sample
 Genome     = opts$Genome
 
 # set seed for random number generator and get seeds for msprime and SLiM
-seed_coal = as.integer(round(runif(Settings$num_of_sims, 0, Settings$seed)))
-seed_forw = as.integer(round(runif(Settings$num_of_sims, 0, Settings$seed)))
-seed_mut  = as.integer(round(runif(Settings$num_of_sims, 0, Settings$seed)))
+seed_coal = as.integer(round(runif(Settings$num_of_sims, 1, Settings$seed)))
+seed_forw = as.integer(round(runif(Settings$num_of_sims, 1, Settings$seed)))
+seed_mut  = as.integer(round(runif(Settings$num_of_sims, 1, Settings$seed)))
 if (Settings$verbose >= 10) write(paste("Seed (msprime-coalescence)", seq_len(Settings$num_of_sims), ":", seed_coal), stdout())
 if (Settings$verbose >= 10) write(paste("Seed (SLiM)", seq_len(Settings$num_of_sims), ":", seed_forw), stdout())
 if (Settings$verbose >= 10) write(paste("Seed (msprime-mutation)", seq_len(Settings$num_of_sims), ":", seed_mut), stdout())
@@ -246,6 +246,10 @@ for (sim in seq_len(Settings$num_of_sims)){
     generations_migration_end<-temps_forward[6]
     sample_time_d_s<-temps_forward[7]
     sample_time_d<-temps_forward[8]
+
+    generation_split_AB_back <-(generation_split_AB_back - generation_split_AB_back)+1
+    generation_split_OA_back <-(generation_split_OA_back - generation_split_AB)
+    
     
 
   #Define region under selection in donor pop in SliM :
@@ -332,8 +336,8 @@ for (sim in seq_len(Settings$num_of_sims)){
                                  popB1                        = popB1,
                                  popA2                        = popA2,
                                  popB2                        = popB2,
-                                 generation_split_OA          = as.integer(generation_split_OA),
-                                 generation_split_AB          = as.integer(generation_split_AB),
+                                 generation_split_OA          = as.integer(generation_split_OA_back),
+                                 generation_split_AB          = as.integer(generation_split_AB_back),
                                  generation_split_A           = as.integer(generation_split_A),
                                  generation_split_B           = as.integer(generation_split_B),
                                  generations_migration_start  = as.integer(generations_migration_start),
